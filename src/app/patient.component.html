@@ -1,0 +1,36 @@
+<table *ngIf="patient | async" class="horizontal">
+	<tr>
+		<th>NHI</th>
+		<td>{{ (patient | async).$key }}</td>
+	</tr>
+	<tr>
+		<th>Last Name</th>
+		<td>
+			<app-editable
+				[value]="(patient | async).lastName"
+				(editItemRequest)="updateLastName($event)"
+			></app-editable>
+		</td>
+	</tr>
+	<tr>
+		<th>First Name</th>
+		<td>
+			<app-editable
+				[value]="(patient | async).firstName"
+				(editItemRequest)="updateFirstName($event)"
+			></app-editable>
+		</td>
+	</tr>
+	<tr>
+		<th>Ward</th>
+		<td>
+			<app-editable
+				[value]="(patient | async).ward || ''"
+				(editItemRequest)="updateWard($event)"
+				[deletable]="true"
+				(deleteItemRequest)="deleteWard()"
+			></app-editable>
+		</td>
+	</tr>
+</table>
+<app-loading *ngIf="!(patient | async)"></app-loading>

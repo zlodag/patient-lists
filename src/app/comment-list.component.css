@@ -1,0 +1,21 @@
+.timestamp {
+	color: grey;
+	font-style: italic;
+}
+.comment {
+	float: left;
+	clear: left;
+}
+.patient, .timestamp {
+	float: right;
+	clear: right;
+}
+li {
+	overflow: auto;
+}
+li:last-child>span {
+	float: right;
+}
+li:last-child>app-new-item-form {
+	float: left;
+}

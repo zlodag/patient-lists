@@ -1,0 +1,32 @@
+<table class="horizontal" *ngIf="auth | async">
+	<tr>
+		<th>Name</th>
+		<td>{{ (auth | async).google ? (auth | async).google.displayName : '???' }}</td>
+	</tr>
+	<tr>
+		<th>Provider</th>
+		<td>{{ getName((auth | async).provider) }}</td>
+	</tr>
+	<tr>
+		<th>ID</th>
+		<td>{{ (auth | async).uid }}</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<button type="button" (click)="auth.logout()">Logout</button>
+		</td>
+	</tr>
+</table>
+
+<table class="horizontal" *ngIf="!(auth | async)">
+	<tr>
+		<td>
+			<button type="button" (click)="auth.login()">Login with Google</button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button type="button" (click)="loginAnon()">Login anonymously</button>
+		</td>
+	</tr>
+</table>

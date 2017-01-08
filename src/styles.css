@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+td,th,li {
+    padding: 0.5em;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+th {
+    text-align: left;
+}
+li:nth-child(even),tbody>tr:nth-child(even),thead>tr {
+    background: #d1e2c8;
+}
+li:nth-child(odd),tbody>tr:nth-child(odd) {
+    background: #eceae0;
+}
+.horizontal td {
+    width: 100%;
+}
+.horizontal th {
+    text-align: right;
+}
+.uppercase {
+    text-transform: uppercase;
+}

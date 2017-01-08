@@ -1,0 +1,15 @@
+label {
+	display: none;
+}
+#newPatientNHI {
+	width: 7ch;
+}
+#newPatientFirstName, #newPatientLastName {
+	width: 7ch;
+}
+#newPatientWard {
+	width: 4ch;
+}
+input.ng-invalid.ng-dirty.ng-touched {
+	border-color: red;
+}

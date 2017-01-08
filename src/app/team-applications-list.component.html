@@ -1,0 +1,14 @@
+<ul *ngIf="applications | async">
+	<li *ngFor="let team of applications | async">
+		<app-editable
+			[value]="team.$key"
+			[editable]="false"
+			[deletable]="true"
+			(deleteItemRequest)="deleteApplication(team.$key)"
+		></app-editable>
+	</li>
+	<li>
+		<app-new-item-form (addItemRequest)="applyToTeam($event)" placeholder="Apply to join team"></app-new-item-form>
+	</li>
+</ul>
+<app-loading *ngIf="!(applications | async)"></app-loading>

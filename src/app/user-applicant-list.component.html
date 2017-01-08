@@ -1,0 +1,8 @@
+<ul *ngIf="applicants | async">
+	<li *ngFor="let applicant of applicants | async">
+		<span [title]="applicant.$key">{{ applicant.$value }}</span>
+		<button type="button" (click)="approveApplication(applicant.$key, applicant.$value)">Approve</button>
+		<button type="button" (click)="declineApplication(applicant.$key)">Decline</button>
+	</li>
+</ul>
+<app-loading *ngIf="!(applicants | async)"></app-loading>

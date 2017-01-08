@@ -1,0 +1,16 @@
+<div class="black">
+	{{ patientData.nhi }}
+	<span *ngIf="patientData.patientData | async">
+		- {{ (patientData.patientData | async).firstName }}
+		<span class="uppercase">{{ (patientData.patientData | async).lastName }}</span>
+	</span>
+</div>
+<nav>
+	<ul>
+		<li><a routerLink="." routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Overview</a></li>
+		<li><a routerLink="problems" routerLinkActive="active">Problems</a></li>
+		<li><a routerLink="tasks" routerLinkActive="active">Tasks</a></li>
+		<li><a routerLink="comments" routerLinkActive="active">Comments</a></li>
+	</ul>
+</nav>
+<router-outlet></router-outlet>

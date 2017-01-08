@@ -1,0 +1,12 @@
+<form #newItemForm="ngForm" (ngSubmit)="addNewItem()">
+
+	<input type="text"
+		[placeholder]="placeholder"
+		required
+		name="title"
+		[(ngModel)]="newItem"
+		/>
+		
+	<button type="submit" [hidden]="newItemForm.invalid">Add</button>
+
+</form>

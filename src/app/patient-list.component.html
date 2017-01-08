@@ -1,0 +1,79 @@
+<form *ngIf="patients | async" #newPatientForm="ngForm" (ngSubmit)="addNewPatient(newPatient)">
+	<table>  
+		<thead>
+			<tr>
+				<th><button type="button" (click)="orderByKey.next('nhi')">NHI</button></th>
+				<th><button type="button" (click)="orderByKey.next('lastName')">Last Name</button></th>
+				<th><button type="button" (click)="orderByKey.next('firstName')">First Name</button></th>
+				<th><button type="button" (click)="orderByKey.next('ward')">Ward</button></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let patient of patients | async">
+				<td><a [routerLink]="patient.$key" routerLinkActive="active">{{ patient.$key }}</a></td>
+				<td class="uppercase">{{ patient.lastName }}</td>
+				<td>{{ patient.firstName }}</td>
+				<td>{{ patient.ward }}</td>
+			</tr>
+			<tr *ngIf="!newPatient">
+				<td colspan="4"><button type="button" (click)="initialize()">Add a new patient</button></td>
+			</tr>
+			<tr *ngIf="newPatient">
+				<td>
+					<label for="newPatientNHI">NHI</label>
+					<input type="text"
+						placeholder="NHI" 
+						id="newPatientNHI"
+						class="uppercase"
+						required
+						pattern="[A-Za-z]{3}[0-9]{4}"
+						maxlength="7" 
+						name="nhi"
+						#nhi="ngModel"
+						[(ngModel)]="newPatient.nhi"
+						/>
+				</td>
+				<td>
+					<label for="newPatientLastName">Surname</label>
+					<input type="text"
+						[hidden]="nhi.invalid"
+						placeholder="Surname" 
+						id="newPatientLastName"
+						required
+						name="lastName"
+					    #lastName="ngModel"
+						[(ngModel)]="newPatient.name.last"
+						/>
+				</td>
+				<td>
+					<label for="newPatientFirstName">First name</label>
+					<input type="text"
+						[hidden]="nhi.invalid || lastName.invalid"
+						placeholder="First name" 
+						id="newPatientFirstName"
+						required
+						name="firstName"
+					    #firstName="ngModel"
+						[(ngModel)]="newPatient.name.first"
+						/>
+				</td>
+				<td>
+					<label for="newPatientWard">Ward</label>
+					<input type="text"
+						[hidden]="nhi.invalid || lastName.invalid || firstName.invalid"							placeholder="Ward" 
+						id="newPatientWard"
+						name="ward"
+					    #ward="ngModel"
+						[(ngModel)]="newPatient.ward"
+						/>
+				</td>
+			</tr>
+			<tr *ngIf="newPatient && newPatientForm && newPatientForm.valid">
+				<td colspan="4">
+					<button type="submit">Add</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<app-loading *ngIf="!(patients | async)"></app-loading>

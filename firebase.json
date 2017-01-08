@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "*.gz"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [ {
+      "source" : "**/*.bundle.@(js|css)",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=31536000"
+      } ]
+    } ],
+    "cleanUrls": true,
+    "trailingSlash": false
+  },
+  "database": {
+    "rules": "src/rules/rules.bolt"
+  }
+}

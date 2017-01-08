@@ -1,0 +1,36 @@
+<!-- <ul *ngIf="users | async">
+	<li *ngFor="let user of users | async">
+		<app-editable
+			[title]="user.$key"
+			[value]="user.name"
+			(editItemRequest)="users.update(user,{name:$event})"
+		></app-editable>
+		<span *ngIf="user.admin">(Admin)</span>
+		<span>member since {{ user.joined | date:'shortDate' }}</span>
+	</li>
+</ul> -->
+<table *ngIf="(users | async) && (teamData.profileData | async)">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Status</th>
+			<th>Joined</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let user of users | async">
+			<td>
+				<app-editable
+					[title]="user.$key"
+					[editable]="(teamData.profileData | async)?.admin"
+					[value]="user.name"
+					(editItemRequest)="users.update(user,{name:$event})"
+				></app-editable>
+			</td>
+			<td *ngIf="!(teamData.profileData | async).admin || user.$key === (teamData.profileData | async).$key">{{ user.admin ? 'Admin' : 'Member' }}</td>
+			<td *ngIf="(teamData.profileData | async).admin && user.$key !== (teamData.profileData | async).$key"><button type="button" (click)="toggleAdmin(user)">{{ user.admin ? 'Admin' : 'Member' }}</button></td>
+			<td>{{ user.joined | date:'short' }}</td>
+		</tr>
+	</tbody>
+</table>
+<app-loading *ngIf="!(users | async)"></app-loading>

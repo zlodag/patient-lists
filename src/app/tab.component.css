@@ -1,0 +1,33 @@
+nav {
+    width: 100%;
+}
+.black {
+    background: black;
+}
+nav ul {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+nav li {
+    list-style: none;
+    flex-grow: 1;
+    padding: 0;
+}
+nav a {
+    background: lightblue;
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+.black, nav a {
+    padding: 0.5em;
+    text-align: center;
+}
+nav a.active {
+    background: #4c636b;
+}
+.black, nav a.active {
+    color: white;
+}

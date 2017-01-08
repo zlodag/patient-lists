@@ -1,0 +1,16 @@
+
+li>* {
+    display: block;
+}
+li:not(:last-child) {
+	padding: 0;
+}
+li>a {
+    padding: 0.5em;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+app-new-item-form {
+	text-align: center;
+}

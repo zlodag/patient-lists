@@ -1,0 +1,199 @@
+path /users/{uid} is UserProfile {
+}
+
+path /users/{uid}/teams {
+	read() { isCurrentUser(uid) }
+}
+
+path /users/{uid}/teams/{team} is Index {
+	write() {
+		// the existence of the new data is the same as 
+		(this == null) ==
+		// that of the data under /teams/$team/users/$uid
+		(root.teams[team].users[uid] == null)
+	}
+}
+
+path /users/{uid}/applications {
+	read() { isCurrentUser(uid) }
+}
+
+path /users/{uid}/applications/{team} is Index {
+	write() {
+		// the existence of the new data is the same as 
+		(this == null) ==
+		// that of the data under /teams/$team/users/$uid
+		(root.teams[team].applicants[uid] == null)
+	}
+}
+
+path /teams/{team} is Team {
+}
+
+path /teams/{team}/applicants {
+	read() { auth != null && wasAdminOfTeam(team) }
+}
+
+path /teams/{team}/applicants/{uid} is Applicant {
+	write() {
+		// ensure the user is authed and
+		auth != null &&
+		(
+			// the existence of the new data is the same as 
+			(this == null) ==
+			// that of the data under /users/$uid/applications/$team
+			(root.users[uid].applications[team] == null)
+		// and
+		) && (
+			// either this user is editing his own application
+			auth.uid == uid ||
+			// or this user is a team admin deleting another user's application
+			(this == null && wasAdminOfTeam(team))
+		)
+	}
+}
+
+path /teams/{team}/users {
+	read() { auth != null && wasPartOfTeam(team) }
+}
+
+path /teams/{team}/users/{uid} is User {
+	write() {
+		// ensure the user is authed and
+		auth != null &&
+		(
+			// the existence of the new data is the same as 
+			(this == null) ==
+			// that of the data under /users/$uid/teams/$team
+			(root.users[uid].teams[team] == null)
+		// and
+		) && (
+			// if the team didn't exist before
+			prior(this).parent() == null ?
+			// ensure this user is creating his own user entry and is admin
+			(auth.uid == uid && this.admin == true) :
+			// otherwise 
+			(
+				// ensure this is a created user
+				prior(this) == null && this != null &&
+				// ensure that the user added has applied
+				prior(this).parent().parent().applicants[uid] != null &&
+				// ensure that this user exists in the team as admin
+				wasAdminOfTeam(team)
+			)
+		)
+	}
+}
+
+path /teams/{team}/users/{uid}/name {
+	write() { auth != null && wasAdminOfTeam(team) }
+}
+
+path /teams/{team}/users/{uid}/admin {
+	write() { auth != null && wasAdminOfTeam(team) && auth.uid != uid }
+}
+
+path /teams/{team}/patients {
+	index() { [ "lastName", "firstName" ] }
+	read() { auth != null && wasPartOfTeam(team) }
+}
+path /teams/{team}/patients/{nhi} is Patient {
+	write() { auth != null && wasPartOfTeam(team) }
+}
+path /teams/{team}/problems/{nhi} is ProblemOrTaskList {
+	read() { auth != null && wasPartOfTeam(team) }
+}
+path /teams/{team}/problems/{nhi}/{problem} is String {
+	write() { auth != null && wasPartOfTeam(team) }	
+}
+path /teams/{team}/tasks/{nhi} is ProblemOrTaskList {
+	read() { auth != null && wasPartOfTeam(team) }
+}
+path /teams/{team}/tasks/{nhi}/{task} is String {
+	write() { auth != null && wasPartOfTeam(team) }	
+}
+path /teams/{team}/comments {
+	index() { [ "by", "at", "nhi" ] }
+	read() { auth != null && wasPartOfTeam(team) }
+}
+path /teams/{team}/comments/{comment} is Comment {
+	create(){ auth != null && wasPartOfTeam(team) }	
+}
+
+type UserProfile {
+	teams: Object | Null
+	applications: Object | Null
+}
+
+type Team {
+	applicants: Object | Null
+	users: Object
+	patients: Object | Null
+	problems: Object | Null
+	tasks: Object | Null
+	comments: Object | Null
+}
+
+type Applicant extends String {
+	validate(){
+		this.parent().parent().users[key()] == null
+	}
+}
+
+type User {
+	validate() {
+		this.parent().parent().applicants[key()] == null
+	}
+	name: String
+	admin: Boolean
+	joined: Timestamp
+}
+
+type Comment {
+	comment: String
+	by: Self
+	at: Timestamp
+	nhi: NHI | Null
+}
+type NHI extends String {
+	validate() { patientExists(this.parent().parent().parent(), this) }
+}
+type Self extends String {
+	validate() { isCurrentUser(this) }
+}
+type Timestamp extends Number {
+	validate() { this == now }
+}
+type Index extends Boolean {
+	validate() { this == true }
+}
+type Patient {
+	validate() { isNHI(key()) }
+	firstName: String
+	lastName: String
+	ward: String | Null
+}
+
+type ProblemOrTaskList {
+	validate() { patientExists(this.parent().parent(), key()) }
+}
+
+isCurrentUser(uid) {
+	auth != null && auth.uid == uid
+}
+
+patientExists(teamLocation, nhi) {
+	prior(teamLocation).patients[nhi] != null
+}
+
+wasPartOfTeam(team) {
+	prior(root).teams[team].users[auth.uid] != null
+}
+
+wasAdminOfTeam(team) {
+	prior(root).teams[team].users[auth.uid].admin == true
+}
+
+isNHI(nhi) {
+	nhi.test(/^[A-Z]{3}[0-9]{4}$/)
+}

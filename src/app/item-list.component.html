@@ -1,0 +1,14 @@
+<ul *ngIf="items | async">
+	<li *ngFor="let item of items | async">
+		<app-editable
+			[value]="item.$value"
+			(editItemRequest)="editItem(item.$key, $event)"
+			[deletable]="true"
+			(deleteItemRequest)="deleteItem(item.$key)"
+			></app-editable>
+	</li>
+	<li>
+		<app-new-item-form (addItemRequest)="addItem($event)" [placeholder]="placeholder"></app-new-item-form>
+	</li>
+</ul>
+<app-loading *ngIf="!(items | async)"></app-loading>
