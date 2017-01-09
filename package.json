@@ -13,8 +13,10 @@
     "build": "ng build --aot --prod --no-sourcemap",
     "prefull": "npm run build",
     "full": "npm run deploy",
-    "test-rules": "mocha --ui tdd \"src/rules/rules-test.js\"",
+    "test-rules": "mocha",
+    "predeploy-rules": "npm run test-rules",
     "predeploy": "npm run test-rules",
+    "deploy-rules": "firebase deploy --only database",
     "deploy": "firebase deploy",
     "serve": "firebase serve"
   },
@@ -41,6 +43,7 @@
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
     "angular-cli": "1.0.0-beta.24",
+    "chai": "^3.5.0",
     "codelyzer": "^2.0.0-beta.1",
     "firebase-bolt": "^0.8.2",
     "firebase-tools": "^3.2.1",
@@ -53,6 +56,7 @@
     "karma-remap-istanbul": "^0.2.1",
     "mocha": "^3.2.0",
     "protractor": "~4.0.13",
+    "targaryen": "^3.0.0-rc.5",
     "ts-node": "1.2.1",
     "tslint": "^4.0.2"
   }

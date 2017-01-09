@@ -21,6 +21,6 @@
     "trailingSlash": false
   },
   "database": {
-    "rules": "src/rules/rules.bolt"
+    "rules": "rules.bolt"
   }
 }

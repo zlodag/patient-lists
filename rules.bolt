@@ -69,7 +69,7 @@ path /teams/{team}/users/{uid} is User {
 		// and
 		) && (
 			// if the team didn't exist before
-			prior(this).parent() == null ?
+			prior(root).teams[team] == null ?
 			// ensure this user is creating his own user entry and is admin
 			(auth.uid == uid && this.admin == true) :
 			// otherwise 
