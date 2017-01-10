@@ -1,6 +1,3 @@
-path /users/{uid} is UserProfile {
-}
-
 path /users/{uid}/teams {
 	read() { isCurrentUser(uid) }
 }
@@ -27,9 +24,6 @@ path /users/{uid}/applications/{team} is Index {
 	}
 }
 
-path /teams/{team} is Team {
-}
-
 path /teams/{team}/applicants {
 	read() { auth != null && wasAdminOfTeam(team) }
 }
@@ -37,7 +31,7 @@ path /teams/{team}/applicants {
 path /teams/{team}/applicants/{uid} is Applicant {
 	write() {
 		// ensure the user is authed and
-		auth != null &&
+		auth != null && (prior(root).teams[team] != null) &&
 		(
 			// the existence of the new data is the same as 
 			(this == null) ==
@@ -74,12 +68,20 @@ path /teams/{team}/users/{uid} is User {
 			(auth.uid == uid && this.admin == true) :
 			// otherwise 
 			(
-				// ensure this is a created user
-				prior(this) == null && this != null &&
-				// ensure that the user added has applied
-				prior(this).parent().parent().applicants[uid] != null &&
-				// ensure that this user exists in the team as admin
-				wasAdminOfTeam(team)
+				this == null ? (
+				// if deleting user from team
+					// self-deleting can only be done by non-admins
+					// other-deleting can only be done by admins
+					auth.uid == uid != wasAdminOfTeam(team)
+				) : (
+				// otherwise
+					// ensure creating (not updating) user in team
+					prior(this) == null &&
+					// ensure that the user added has applied
+					prior(this).parent().parent().applicants[uid] != null &&
+					// ensure that this user exists in the team as admin
+					wasAdminOfTeam(team)
+				)
 			)
 		)
 	}
@@ -118,20 +120,6 @@ path /teams/{team}/comments {
 }
 path /teams/{team}/comments/{comment} is Comment {
 	create(){ auth != null && wasPartOfTeam(team) }	
-}
-
-type UserProfile {
-	teams: Object | Null
-	applications: Object | Null
-}
-
-type Team {
-	applicants: Object | Null
-	users: Object
-	patients: Object | Null
-	problems: Object | Null
-	tasks: Object | Null
-	comments: Object | Null
 }
 
 type Applicant extends String {
