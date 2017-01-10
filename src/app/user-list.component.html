@@ -1,14 +1,3 @@
-<!-- <ul *ngIf="users | async">
-	<li *ngFor="let user of users | async">
-		<app-editable
-			[title]="user.$key"
-			[value]="user.name"
-			(editItemRequest)="users.update(user,{name:$event})"
-		></app-editable>
-		<span *ngIf="user.admin">(Admin)</span>
-		<span>member since {{ user.joined | date:'shortDate' }}</span>
-	</li>
-</ul> -->
 <table *ngIf="(users | async) && (teamData.profileData | async)">
 	<thead>
 		<tr>
@@ -22,9 +11,11 @@
 			<td>
 				<app-editable
 					[title]="user.$key"
-					[editable]="(teamData.profileData | async)?.admin"
+					[editable]="(teamData.profileData | async).admin"
+					[deletable]="(teamData.profileData | async).admin && user.$key !== (teamData.profileData | async).$key"
 					[value]="user.name"
 					(editItemRequest)="users.update(user,{name:$event})"
+					(deleteItemRequest)="deleteUser(user)"
 				></app-editable>
 			</td>
 			<td *ngIf="!(teamData.profileData | async).admin || user.$key === (teamData.profileData | async).$key">{{ user.admin ? 'Admin' : 'Member' }}</td>

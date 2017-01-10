@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2';
 
 import { TeamDataService } from './team-data.service';
@@ -50,13 +51,15 @@ export class PatientListComponent implements OnInit {
     initialize() {
         this.newPatient = new Patient();
     }
-    addNewPatient(patient: Patient) {
+    addNewPatient(patient: Patient, newPatientForm: NgForm) {
         if (this.patients) {
             patient.sanitize();
             this.patients.update(patient.nhi, {
                 firstName: patient.name.first,
                 lastName: patient.name.last,
                 ward: patient.ward
+            }).then(() => {
+                newPatientForm.resetForm(new Patient());
             });
         }
     }

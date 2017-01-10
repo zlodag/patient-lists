@@ -1,32 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2';
-import { TeamDataService } from './team-data.service';
+import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PatientDataService } from './patient-data.service';
 
 @Component({
     templateUrl: './patient.component.html',
 })
 
-export class PatientComponent implements OnInit {
-    patient: FirebaseObjectObservable<any> = null;
+export class PatientComponent {
     constructor(
-        private teamData: TeamDataService,
-        private patientData: PatientDataService,
-        private db: AngularFireDatabase
+        private router: Router,
+        private route: ActivatedRoute,
+        private patientData: PatientDataService
     ) { }
-    ngOnInit() {
-        this.patient = this.db.object('teams/' + this.teamData.team + '/patients/' + this.patientData.nhi);
-    }
     updateFirstName(firstName: string) {
-        this.patient.update({firstName: firstName.trim()});
+        this.patientData.patientData.update({firstName: firstName.trim()});
     }
     updateLastName(lastName: string) {
-        this.patient.update({lastName: lastName.trim()});
+        this.patientData.patientData.update({lastName: lastName.trim()});
     }
     updateWard(ward: string) {
-        this.patient.update({ward: ward.trim()});
+        this.patientData.patientData.update({ward: ward.trim()});
     }
     deleteWard() {
-        this.patient.update({ward: null});
+        this.patientData.patientData.update({ward: null});
+    }
+    deletePatient() {
+        if (confirm('Delete patient?')) {
+            this.patientData.patientData.remove();
+            this.router.navigate(['../'], { relativeTo: this.route.parent });
+        }
     }
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/empty';
 
 @Injectable()
 export class TeamDataService {
@@ -19,7 +20,9 @@ export class TeamDataService {
             this.team = params['team'];
             this.userData = this.af.database.object('teams/' + this.team + '/users');
             this.patientData = this.af.database.object('teams/' + this.team + '/patients');
-            this.profileData = this.af.auth.switchMap(authObj => this.af.database.object('teams/' + this.team + '/users/' + authObj.uid));
+            this.profileData = this.af.auth.switchMap(authObj =>
+                authObj ? this.af.database.object('teams/' + this.team + '/users/' + authObj.uid) : Observable.empty()
+            );
         });
     }
 }

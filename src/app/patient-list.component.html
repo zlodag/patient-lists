@@ -1,4 +1,4 @@
-<form *ngIf="patients | async" #newPatientForm="ngForm" (ngSubmit)="addNewPatient(newPatient)">
+<form *ngIf="patients | async" #newPatientForm="ngForm" (ngSubmit)="addNewPatient(newPatient, newPatientForm)">
 	<table>  
 		<thead>
 			<tr>

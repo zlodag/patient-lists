@@ -1,17 +1,21 @@
 <ul *ngIf="(comments | async) && (teamData.userData | async) && (patientData || (teamData.patientData | async))">
 	<li *ngFor="let comment of comments | async">
 		<span class="comment">{{ comment.comment }}</span>
-		<a class="patient"
-			*ngIf="!patientData && comment.nhi"
-			[routerLink]="['../patients',comment.nhi,'comments']"
-			[title]="comment.nhi"
-			>
+		<span class="patient" *ngIf="!patientData && comment.nhi">
 			RE:
-			{{ (teamData.patientData | async)[comment.nhi].firstName }}
-			{{ (teamData.patientData | async)[comment.nhi].lastName }}
-		</a>
+			<span *ngIf="!(teamData.patientData | async)[comment.nhi]">
+				{{ comment.nhi }}
+			</span>
+			<a *ngIf="(teamData.patientData | async)[comment.nhi]"
+				[routerLink]="['../patients',comment.nhi,'comments']"
+				[title]="comment.nhi"
+				>
+				{{ (teamData.patientData | async)[comment.nhi].firstName }}
+				{{ (teamData.patientData | async)[comment.nhi].lastName }}
+			</a>
+		</span>
 		<div class="timestamp">
-			<span [title]="comment.by">{{ (teamData.userData | async)[comment.by].name }}</span>
+			<span [title]="comment.by">{{ (teamData.userData | async)[comment.by]?.name || comment.by }}</span>
 			<span>at {{ comment.at | date:'HH:mm, d/MM/yy' }}</span>
 		</div>
 	</li>

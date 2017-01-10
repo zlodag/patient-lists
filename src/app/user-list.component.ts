@@ -21,6 +21,14 @@ export class UserListComponent implements OnInit {
             }
         });
     }
+    deleteUser(user: any) {
+        if (confirm('Delete user "' + user.name + '"?')) {
+            this.db.object('/').update({
+                ['teams/' + this.teamData.team + '/users/' + user.$key]: null,
+                ['users/' + user.$key + '/teams/' + this.teamData.team]: null
+            });
+        }
+    }
     toggleAdmin(user: any) {
         this.users.update(user, {admin: !user.admin});
     }
