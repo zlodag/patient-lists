@@ -15,7 +15,7 @@ export class TeamDataService {
         private route: ActivatedRoute,
         private af: AngularFire,
     ) {
-        // console.log("TeamDataService created");
+        console.log("TeamDataService created");
         this.route.params.subscribe((params: Params) => {
             this.team = params['team'];
             this.userData = this.af.database.object('teams/' + this.team + '/users');

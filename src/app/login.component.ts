@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2';
+import { AuthService } from './auth.service';
 
 @Component({
     templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
 })
 
 export class LoginComponent {
     constructor(
-        public auth: AngularFireAuth,
-    ) {}
+        public authService: AuthService,
+    ) { }
 }

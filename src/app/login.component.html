@@ -1,2 +1,5 @@
-<h2>UID: {{ (auth | async)?.uid }}</h2>
-<button *ngIf="!(auth | async)" type="button" (click)="auth.login()">Login</button>
+<button type="button" (click)="authService.googleLogin()">Login with Google</button>
+<button type="button" (click)="authService.googleLogin()">Login with Google (redirect)</button>
+<button type="button" (click)="authService.facebookLogin()">Login with Facebook</button>
+
+<a routerLink="/">Profile page</a>

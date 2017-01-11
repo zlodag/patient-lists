@@ -12,6 +12,7 @@ export class PatientDataService {
         private db: AngularFireDatabase,
         private teamData: TeamDataService,
     ) {
+        console.log("PatientDataService created");
         this.route.params.subscribe((params: Params) => {
             this.nhi = params['nhi'];
             this.patientData = this.db.object('teams/' + this.teamData.team + '/patients/' + this.nhi);

@@ -28,11 +28,6 @@ export const firebaseConfig: FirebaseAppConfig = {
     storageBucket: 'patient-lists.appspot.com',
 };
 
-// export const firebaseAuthConfig = {
-//     provider: AuthProviders.Google,
-//     method: AuthMethods.Popup,
-// };
-
 @NgModule({
     imports: [
         BrowserModule,

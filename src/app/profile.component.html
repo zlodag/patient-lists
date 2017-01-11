@@ -1,32 +1,21 @@
-<table class="horizontal" *ngIf="auth | async">
+<table class="horizontal">
 	<tr>
 		<th>Name</th>
-		<td>{{ (auth | async).google ? (auth | async).google.displayName : '???' }}</td>
+		<td>{{ (authService.auth | async).auth.displayName }}</td>
 	</tr>
 	<tr>
 		<th>Provider</th>
-		<td>{{ getName((auth | async).provider) }}</td>
+		<td>{{ (authService.auth | async).auth.providerData[0].providerId }}</td>
 	</tr>
 	<tr>
 		<th>ID</th>
-		<td>{{ (auth | async).uid }}</td>
+		<td>{{ (authService.auth | async).uid }}</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<button type="button" (click)="auth.logout()">Logout</button>
+			<button type="button" (click)="authService.logout()">Logout</button>
 		</td>
 	</tr>
 </table>
-
-<table class="horizontal" *ngIf="!(auth | async)">
-	<tr>
-		<td>
-			<button type="button" (click)="auth.login()">Login with Google</button>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<button type="button" (click)="loginAnon()">Login anonymously</button>
-		</td>
-	</tr>
-</table>
+<!-- <pre>{{ authService.auth | async | json }}</pre> -->
+<!-- <img [src]="(auth | async).auth.photoURL"/> -->

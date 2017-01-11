@@ -1,4 +1,4 @@
-<ul *ngIf="applications | async">
+<ul>
 	<li *ngFor="let team of applications | async">
 		<app-editable
 			[value]="team.$key"
@@ -11,4 +11,6 @@
 		<app-new-item-form (addItemRequest)="applyToTeam($event)" placeholder="Apply to join team"></app-new-item-form>
 	</li>
 </ul>
-<app-loading *ngIf="!(applications | async)"></app-loading>
+<button type="button" (click)="authService.logout()">Logout</button>
+
+<!-- <app-loading *ngIf="!(authService.applicationIndex | async)"></app-loading> -->
