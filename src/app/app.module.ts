@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LOCALE_ID } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login.component';
 import { TabDashboardComponent, TabTeamComponent, TabPatientComponent } from './tab.component';
 import { ProfileComponent } from './profile.component';
 import { TeamApplicationsListComponent } from './team-applications-list.component';
@@ -27,20 +28,21 @@ export const firebaseConfig: FirebaseAppConfig = {
     storageBucket: 'patient-lists.appspot.com',
 };
 
-export const firebaseAuthConfig = {
-    provider: AuthProviders.Google,
-    method: AuthMethods.Popup,
-};
+// export const firebaseAuthConfig = {
+//     provider: AuthProviders.Google,
+//     method: AuthMethods.Popup,
+// };
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
-        AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+        AngularFireModule.initializeApp(firebaseConfig),
         AppRoutingModule
     ],
     declarations: [
         AppComponent,
+        LoginComponent,
         ProfileComponent,
         TeamListComponent,
         TeamApplicationsListComponent,

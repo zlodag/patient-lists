@@ -1,0 +1,2 @@
+<h2>UID: {{ (auth | async)?.uid }}</h2>
+<button *ngIf="!(auth | async)" type="button" (click)="auth.login()">Login</button>
