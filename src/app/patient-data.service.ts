@@ -3,9 +3,14 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2';
 import { TeamDataService } from './team-data.service';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/switchMap';
+
 @Injectable()
 export class PatientDataService {
-    nhi: string;
+    nhi: Observable<string>;
     patientData: FirebaseObjectObservable<any>;
     constructor(
         private route: ActivatedRoute,
@@ -13,9 +18,9 @@ export class PatientDataService {
         private teamData: TeamDataService,
     ) {
         console.log("PatientDataService created");
-        this.route.params.subscribe((params: Params) => {
-            this.nhi = params['nhi'];
-            this.patientData = this.db.object('teams/' + this.teamData.team + '/patients/' + this.nhi);
-        });
+        this.nhi = this.route.params.map(params => params['nhi']);
+        this.patientData = Observable.combineLatest(this.nhi, this.teamData.team)
+            .switchMap(([nhi, team]) => this.db.object('teams/' + team + '/patients/' + nhi)) as
+            FirebaseObjectObservable<any>;
     }
 }

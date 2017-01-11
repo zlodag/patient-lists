@@ -1,5 +1,5 @@
 <div class="black">
-	{{ patientData.nhi }}
+	{{ patientData.nhi | async }}
 	<span *ngIf="patientData.patientData | async">
 		- {{ (patientData.patientData | async).firstName }}
 		<span class="uppercase">{{ (patientData.patientData | async).lastName }}</span>

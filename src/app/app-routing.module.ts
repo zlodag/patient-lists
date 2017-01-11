@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthService } from './auth.service';
+import { AuthModule } from './auth.module';
+import { AuthGuardService } from './auth-guard.service';
 
 import { LoginComponent } from './login.component';
 import { TabDashboardComponent, TabTeamComponent, TabPatientComponent } from './tab.component';
@@ -19,12 +20,12 @@ const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        canActivate: [AuthService],
+        canActivate: [AuthGuardService],
     },
     {
         path: '',
         component: TabDashboardComponent,
-        canActivateChild: [AuthService],
+        canActivateChild: [AuthGuardService],
         children: [
             { path: '', component: ProfileComponent },
             { path: 'applications', component: TeamApplicationsListComponent },
@@ -64,13 +65,13 @@ const appRoutes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes),
+        AuthModule
     ],
     exports: [
         RouterModule
     ],
     providers: [
-        AuthService
     ],
 })
 export class AppRoutingModule { }

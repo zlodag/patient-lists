@@ -3,6 +3,10 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2';
 import { TeamDataService } from './team-data.service';
 import { PatientDataService } from './patient-data.service';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/combineLatest';
+
 export abstract class ItemListComponent implements OnInit {
     abstract itemType: string;
     abstract placeholder: string;
@@ -13,7 +17,9 @@ export abstract class ItemListComponent implements OnInit {
         private patientData: PatientDataService,
         ) {}
     ngOnInit() {
-        this.items = this.db.list('teams/' + this.teamData.team + '/' + this.itemType + '/' + this.patientData.nhi);
+        this.items = Observable
+            .combineLatest(this.teamData.team, this.patientData.nhi)
+            .switchMap(([team, nhi]) => this.db.list('teams/' + team + '/' + this.itemType + '/' + nhi)) as FirebaseListObservable<any[]>;
     }
     addItem(item: string) {
         this.items.push(item.trim());
@@ -22,7 +28,8 @@ export abstract class ItemListComponent implements OnInit {
         this.items.remove(key);
     }
     editItem(key: string, value: string) {
-        this.items.$ref.ref.child(key).set(value);
+        this.items.update(key, value);
+        // this.items.$ref.ref.child(key).set(value);
     }
 }
 
@@ -32,13 +39,13 @@ export abstract class ItemListComponent implements OnInit {
 export class ProblemListComponent extends ItemListComponent {
     itemType = 'problems';
     placeholder = 'Add problem';
-    constructor(
-        db: AngularFireDatabase,
-        teamData: TeamDataService,
-        patientData: PatientDataService,
-        ) {
-        super(db, teamData, patientData);
-    }
+    // constructor(
+    //     db: AngularFireDatabase,
+    //     teamData: TeamDataService,
+    //     patientData: PatientDataService,
+    //     ) {
+    //     super(db, teamData, patientData);
+    // }
 }
 
 @Component({
@@ -47,11 +54,11 @@ export class ProblemListComponent extends ItemListComponent {
 export class TaskListComponent extends ItemListComponent {
     itemType = 'tasks';
     placeholder = 'Add task';
-    constructor(
-        db: AngularFireDatabase,
-        teamData: TeamDataService,
-        patientData: PatientDataService,
-        ) {
-        super(db, teamData, patientData);
-    }
+    // constructor(
+    //     db: AngularFireDatabase,
+    //     teamData: TeamDataService,
+    //     patientData: PatientDataService,
+    //     ) {
+    //     super(db, teamData, patientData);
+    // }
 }

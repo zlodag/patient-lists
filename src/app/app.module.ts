@@ -3,7 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule, FirebaseAppConfig, AuthProviders, AuthMethods } from 'angularfire2';
 import { AppRoutingModule } from './app-routing.module';
+
+import { AuthModule } from './auth.module';
+
 import { LOCALE_ID } from '@angular/core';
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login.component';
@@ -33,7 +37,8 @@ export const firebaseConfig: FirebaseAppConfig = {
         BrowserModule,
         FormsModule,
         AngularFireModule.initializeApp(firebaseConfig),
-        AppRoutingModule
+        AppRoutingModule,
+        AuthModule
     ],
     declarations: [
         AppComponent,

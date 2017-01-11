@@ -11,6 +11,4 @@
 		<app-new-item-form (addItemRequest)="applyToTeam($event)" placeholder="Apply to join team"></app-new-item-form>
 	</li>
 </ul>
-<button type="button" (click)="authService.logout()">Logout</button>
-
-<!-- <app-loading *ngIf="!(authService.applicationIndex | async)"></app-loading> -->
+<app-loading *ngIf="!(applications | async)"></app-loading>

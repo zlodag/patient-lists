@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2';
 
 import { TeamDataService } from './team-data.service';
 import { PatientDataService } from './patient-data.service';
@@ -8,11 +7,7 @@ import { PatientDataService } from './patient-data.service';
   styleUrls: ['./tab.component.css'],
   templateUrl: './tab-dashboard.component.html',
 })
-export class TabDashboardComponent {
-    constructor(
-        public auth: AngularFireAuth,
-    ) { }
-}
+export class TabDashboardComponent { }
 
 @Component({
     styleUrls: ['./tab.component.css'],
