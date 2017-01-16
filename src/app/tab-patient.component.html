@@ -1,7 +1,9 @@
 <div class="black">
 	{{ patientData.nhi }}
-	<span>{{ (patientData.patient | async)?.firstName }}</span>
-	<span class="uppercase">{{ (patientData.patient | async)?.lastName }}</span>
+    <span *ngIf="patientData.patient | async">
+        (<span>{{ (patientData.patient | async)?.firstName }}</span>
+        <span class="uppercase">{{ (patientData.patient | async)?.lastName }}</span>)
+    </span>
 </div>
 <nav>
 	<ul>

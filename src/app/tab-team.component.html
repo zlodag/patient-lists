@@ -4,7 +4,10 @@
 		<li><a routerLink="." routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Users</a></li>
 		<li *ngIf="(teamData.profileData | async)?.admin"><a routerLink="applicants" routerLinkActive="active">Applicants</a></li>
 		<li><a routerLink="patients" routerLinkActive="active">Patients</a></li>
-		<li><a routerLink="discussion" routerLinkActive="active">Discussion</a></li>
+		<li><a routerLink="discussion" routerLinkActive="active">
+            Discussion
+            <span class="unread">{{ teamData.unreadCount | async }}</span>
+        </a></li>
 	</ul>
 </nav>
 <router-outlet></router-outlet>

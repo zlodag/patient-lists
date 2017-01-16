@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { TeamDataService } from './team-data.service';
 
@@ -6,6 +6,9 @@ import { TeamDataService } from './team-data.service';
     templateUrl: './team-comment-list.component.html',
     styleUrls: ['./comment-list.component.css'],
 })
-export class TeamCommentListComponent {
+export class TeamCommentListComponent implements OnDestroy {
     constructor(public teamData: TeamDataService) { }
+    ngOnDestroy() {
+        this.teamData.lastChecked.next(Date.now());
+    }
 }

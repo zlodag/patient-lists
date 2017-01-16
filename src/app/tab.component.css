@@ -31,3 +31,14 @@ nav a.active {
 .black, nav a.active {
     color: white;
 }
+.unread {
+    background: black;
+    border-radius: 1em;
+    padding: 0 0.5em;
+    margin: 0 0.5em;
+    color: white;
+    font-weight: bold;
+}
+.active>.unread, .unread:empty {
+    display: none;
+}

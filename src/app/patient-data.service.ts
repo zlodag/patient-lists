@@ -1,14 +1,12 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 
-import { Subscription } from 'rxjs/Subscription';
 
 import { TeamDataService } from './team-data.service';
 
 @Injectable()
-export class PatientDataService implements OnDestroy {
-    private sub: Subscription;
+export class PatientDataService {
     nhi: string;
     patient: FirebaseObjectObservable<any>;
     problems: FirebaseListObservable<any[]>;
@@ -19,7 +17,7 @@ export class PatientDataService implements OnDestroy {
         private db: AngularFireDatabase,
         private teamData: TeamDataService,
     ) {
-        this.sub = this.route.params.subscribe(params => {
+        this.route.params.subscribe(params => {
             this.nhi =  params['nhi'];
             this.patient = this.db.object('teams/' + this.teamData.team + '/patients/' + this.nhi);
             this.problems = this.db.list('teams/' + this.teamData.team + '/problems/' + this.nhi);
@@ -32,8 +30,5 @@ export class PatientDataService implements OnDestroy {
                 }
             });
         });
-    }
-    ngOnDestroy() {
-        this.sub.unsubscribe();
     }
 }
