@@ -1,7 +1,7 @@
-<ul *ngIf="(comments | async) && (teamData.userData | async) && (patientData || (teamData.patientData | async))">
-	<li *ngFor="let comment of comments | async">
+<ul *ngIf="(teamData.comments | async) && (teamData.userData | async) && (teamData.patientData | async)">
+	<li *ngFor="let comment of teamData.comments | async">
 		<span class="comment">{{ comment.comment }}</span>
-		<span class="patient" *ngIf="!patientData && comment.nhi">
+		<span class="patient" *ngIf="comment.nhi">
 			RE:
 			<span *ngIf="!(teamData.patientData | async)[comment.nhi]">
 				{{ comment.nhi }}
@@ -20,16 +20,15 @@
 		</div>
 	</li>
 	<li>
+		<app-new-item-form (addItemRequest)="teamData.addComment($event)" placeholder="Add comment"></app-new-item-form>
 		<span>
 			<label for="limitTo">Number of comments:</label>
-			<select [ngModel]="limitModel" (ngModelChange)="limitTo($event)" id="limitTo">
-				<option *ngFor="let limit of limits"
-					[value]="limit">
-					{{ limit }}
-				</option>
-			</select>
+			<button *ngFor="let limit of teamData.limits"
+				[disabled]="limit === (teamData.limitToLast | async)"
+				(click)="teamData.limitToLast.next(limit)">
+				{{ limit }}
+			</button>
 		</span>
-		<app-new-item-form (addItemRequest)="addComment($event)" placeholder="Add comment"></app-new-item-form>
 	</li>
 </ul>
-<app-loading *ngIf="!(comments | async) || !(teamData.userData | async) || (!patientData && !(teamData.patientData | async))"></app-loading>
+<app-loading *ngIf="!(teamData.comments | async) || !(teamData.userData | async) || !(teamData.patientData | async)"></app-loading>

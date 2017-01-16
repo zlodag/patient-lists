@@ -11,10 +11,12 @@ import { TeamApplicationsListComponent } from './team-applications-list.componen
 import { TeamListComponent } from './team-list.component';
 import { UserListComponent } from './user-list.component';
 import { UserApplicantListComponent } from './user-applicant-list.component';
-import { CommentListComponent } from './comment-list.component';
+import { TeamCommentListComponent } from './team-comment-list.component';
+import { PatientCommentListComponent } from './patient-comment-list.component';
 import { PatientListComponent } from './patient-list.component';
 import { PatientComponent } from './patient.component';
-import { ProblemListComponent, TaskListComponent } from './item-list.component';
+import { ProblemListComponent } from './problem-list.component';
+import { TaskListComponent } from './task-list.component';
 
 const appRoutes: Routes = [
     {
@@ -38,7 +40,7 @@ const appRoutes: Routes = [
                         children: [
                             { path: '', component: UserListComponent },
                             { path: 'applicants', component: UserApplicantListComponent },
-                            { path: 'discussion', component: CommentListComponent },
+                            { path: 'discussion', component: TeamCommentListComponent },
                             {
                                 path: 'patients',
                                 children: [
@@ -50,7 +52,7 @@ const appRoutes: Routes = [
                                             { path: '', component: PatientComponent },
                                             { path: 'problems', component: ProblemListComponent },
                                             { path: 'tasks', component: TaskListComponent },
-                                            { path: 'comments', component: CommentListComponent },
+                                            { path: 'comments', component: PatientCommentListComponent },
                                         ]
                                     },
                                 ]

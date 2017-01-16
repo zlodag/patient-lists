@@ -1,9 +1,10 @@
 <span *ngIf="!edit">
 	{{ value }}
 	<button *ngIf="editable" type="button" (click)="edit = true">Edit</button>
+    <button *ngIf="deletable" type="button" (click)="deleteItem()">Delete</button>
 </span>
 <form *ngIf="edit" (submit)="editItem(name.value)">
 	<input type="text" placeholder="Enter new value" [value]="value" #name required />
 	<input type="submit"/>
+    <button type="button" (click)="edit = false">Cancel</button>
 </form>
-<button *ngIf="deletable" type="button" (click)="deleteItem()">Delete</button>

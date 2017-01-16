@@ -15,9 +15,7 @@ export class TabDashboardComponent { }
     providers: [TeamDataService],
 })
 export class TabTeamComponent {
-    constructor(
-        public teamData: TeamDataService,
-    ) { }
+    constructor(public teamData: TeamDataService) { }
 }
 
 @Component({
@@ -26,7 +24,5 @@ export class TabTeamComponent {
     providers: [PatientDataService],
 })
 export class TabPatientComponent {
-    constructor(
-        public patientData: PatientDataService,
-    ) { }
+    constructor(public patientData: PatientDataService) { }
 }

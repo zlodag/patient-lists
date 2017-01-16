@@ -4,5 +4,6 @@
 		<button type="button" (click)="approveApplication(applicant.$key, applicant.$value)">Approve</button>
 		<button type="button" (click)="declineApplication(applicant.$key)">Decline</button>
 	</li>
+    <li *ngIf="!((applicants | async)?.length)">No current applicants</li>
 </ul>
 <app-loading *ngIf="!(applicants | async)"></app-loading>

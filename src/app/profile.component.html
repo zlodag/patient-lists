@@ -1,4 +1,4 @@
-<table class="horizontal">
+<table *ngIf="authService.auth | async" class="horizontal">
 	<tr>
 		<th>Name</th>
 		<td>{{ (authService.auth | async).auth.displayName }}</td>
@@ -17,5 +17,3 @@
 		</td>
 	</tr>
 </table>
-<!-- <pre>{{ authService.auth | async | json }}</pre> -->
-<!-- <img [src]="(auth | async).auth.photoURL"/> -->

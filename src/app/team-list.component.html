@@ -1,13 +1,9 @@
-<ul>
+<ul *ngIf="teams | async">
     <li *ngFor="let team of teams | async">
-	<!-- <li *ngFor="let team of authService.teamIndex | async"> -->
 		<a [routerLink]="team.$key" routerLinkActive="active">{{ team.$key }}</a>
 	</li>
 	<li>
 		<app-new-item-form (addItemRequest)="addTeam($event)" placeholder="Add team"></app-new-item-form>
 	</li>
 </ul>
-<!-- <button type="button" (click)="authService.logout()">Logout</button> -->
 <app-loading *ngIf="!(teams | async)"></app-loading>
-<!-- <app-loading *ngIf="!(authService.teamIndex | async)"></app-loading> -->
-

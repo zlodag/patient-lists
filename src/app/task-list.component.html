@@ -1,0 +1,14 @@
+<ul *ngIf="patientData.tasks | async">
+	<li *ngFor="let task of patientData.tasks | async">
+		<app-editable
+			[value]="task.$value"
+			(editItemRequest)="patientData.tasks.$ref.ref.child(task.$key).set($event)"
+			[deletable]="true"
+			(deleteItemRequest)="patientData.tasks.remove(task)"
+			></app-editable>
+	</li>
+	<li>
+		<app-new-item-form (addItemRequest)="patientData.tasks.push($event)" placeholder="Add task"></app-new-item-form>
+	</li>
+</ul>
+<app-loading *ngIf="!(patientData.tasks | async)"></app-loading>

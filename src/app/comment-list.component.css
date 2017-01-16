@@ -2,20 +2,14 @@
 	color: grey;
 	font-style: italic;
 }
-.comment {
+.comment, li:last-child>app-new-item-form {
 	float: left;
 	clear: left;
 }
-.patient, .timestamp {
+.patient, .timestamp, li:last-child>span {
 	float: right;
 	clear: right;
 }
 li {
 	overflow: auto;
-}
-li:last-child>span {
-	float: right;
-}
-li:last-child>app-new-item-form {
-	float: left;
 }

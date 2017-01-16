@@ -1,35 +1,54 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2';
-import { Observable } from 'rxjs/Observable';
+import { Injectable, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
+import * as firebase from 'firebase';
+
+import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { AuthService } from './auth.service';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/observable/empty';
-
 @Injectable()
-export class TeamDataService {
-    team: Observable<string>;
+export class TeamDataService implements OnDestroy {
+    private sub: Subscription;
+    team: string;
     userData: FirebaseObjectObservable<any>;
     patientData: FirebaseObjectObservable<any>;
+    comments: FirebaseListObservable<any[]>;
     profileData: FirebaseObjectObservable<any>;
+    limits = [5, 10, 20, 50];
+    limitToLast = new BehaviorSubject<number>(this.limits[1]);
     constructor(
         private route: ActivatedRoute,
         private db: AngularFireDatabase,
         private authService: AuthService,
     ) {
-        console.log("TeamDataService created");
-        this.team = this.route.params.map(params => params['team']);
-        this.userData = this.team.switchMap(team => this.db.object('teams/' + team + '/users')) as FirebaseObjectObservable<any>;
-        this.patientData = this.team.switchMap(team => this.db.object('teams/' + team + '/patients')) as FirebaseObjectObservable<any>;
-        this.profileData = Observable.combineLatest(this.team, this.authService.auth)
-            .switchMap(
-                ([team, authState]) =>
-                authState ?
-                this.db.object('teams/' + team + '/users/' + authState.uid) :
-                Observable.empty()
-            ) as FirebaseObjectObservable<any>;
+        this.sub = this.route.params.subscribe(params => {
+            this.team =  params['team'];
+            this.userData = this.db.object('teams/' + this.team + '/users');
+            this.patientData = this.db.object('teams/' + this.team + '/patients');
+            this.comments = this.db.list('teams/' + this.team + '/comments', {
+                query: {
+                    orderByChild: 'at',
+                    limitToLast: this.limitToLast,
+                }
+            });
+            this.authService.auth.first().subscribe(authState => {
+                this.profileData = this.db.object('teams/' + this.team + '/users/' + authState.uid);
+            });
+        });
+    }
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+    addComment(text: string, nhi?: string) {
+        this.authService.auth.first().subscribe(authState => {
+            this.comments.push({
+                comment: text.trim(),
+                by: authState.uid,
+                at: firebase.database.ServerValue.TIMESTAMP,
+                nhi: nhi || null,
+            });
+        });
     }
 }

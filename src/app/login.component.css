@@ -1,3 +1,15 @@
 button {
-  color: blue;
+    display: block;
+    margin: 1em auto;
+    padding: 1em;
+    background: lightgrey;
+    color: black;
+    border: none;
+    border-radius: 5em;
+    font-size: large;
+}
+button:hover {
+    color: white;
+    background: black;
+    cursor: pointer;
 }

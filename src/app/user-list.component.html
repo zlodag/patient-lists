@@ -18,8 +18,12 @@
 					(deleteItemRequest)="deleteUser(user)"
 				></app-editable>
 			</td>
-			<td *ngIf="!(teamData.profileData | async).admin || user.$key === (teamData.profileData | async).$key">{{ user.admin ? 'Admin' : 'Member' }}</td>
-			<td *ngIf="(teamData.profileData | async).admin && user.$key !== (teamData.profileData | async).$key"><button type="button" (click)="toggleAdmin(user)">{{ user.admin ? 'Admin' : 'Member' }}</button></td>
+			<td *ngIf="!(teamData.profileData | async).admin || user.$key === (teamData.profileData | async).$key">
+				{{ user.admin ? 'Admin' : 'Member' }}
+			</td>
+			<td *ngIf="(teamData.profileData | async).admin && user.$key !== (teamData.profileData | async).$key">
+				<button type="button" (click)="users.update(user, {admin: !user.admin})">{{ user.admin ? 'Admin' : 'Member' }}</button>
+			</td>
 			<td>{{ user.joined | date:'short' }}</td>
 		</tr>
 	</tbody>

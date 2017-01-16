@@ -1,4 +1,4 @@
-<ul>
+<ul *ngIf="applications | async">
 	<li *ngFor="let team of applications | async">
 		<app-editable
 			[value]="team.$key"

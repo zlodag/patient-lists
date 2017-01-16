@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector: 'app-new-item-form',
     templateUrl: './new-item-form.component.html',
+    styleUrls: ['./new-item-form.component.css'],
 })
 
 export class NewItemFormComponent {
@@ -10,7 +11,10 @@ export class NewItemFormComponent {
     @Input() placeholder: string;
     @Output() addItemRequest = new EventEmitter<string>();
     addNewItem() {
-        this.addItemRequest.emit(this.newItem);
-        this.newItem = '';
+        let newItemTrimmed = this.newItem.trim();
+        if (newItemTrimmed.length) {
+            this.addItemRequest.emit(newItemTrimmed);
+            this.newItem = '';
+        }
     }
 }

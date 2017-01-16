@@ -2,7 +2,7 @@
 	<table>  
 		<thead>
 			<tr>
-				<th><button type="button" (click)="orderByKey.next('nhi')">NHI</button></th>
+				<th><button type="button" (click)="orderByKey.next(null)">NHI</button></th>
 				<th><button type="button" (click)="orderByKey.next('lastName')">Last Name</button></th>
 				<th><button type="button" (click)="orderByKey.next('firstName')">First Name</button></th>
 				<th><button type="button" (click)="orderByKey.next('ward')">Ward</button></th>
@@ -60,7 +60,8 @@
 				<td>
 					<label for="newPatientWard">Ward</label>
 					<input type="text"
-						[hidden]="nhi.invalid || lastName.invalid || firstName.invalid"							placeholder="Ward" 
+						[hidden]="nhi.invalid || lastName.invalid || firstName.invalid"
+						placeholder="Ward" 
 						id="newPatientWard"
 						name="ward"
 					    #ward="ngModel"
