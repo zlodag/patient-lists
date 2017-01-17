@@ -69,6 +69,19 @@ module.exports = {
       },
       patients: {
         'ABC1234': true
+      },
+      problems: {
+        'ABC1234': {
+          'existingProblemId': {
+            name: 'Problem Name',
+            by: 'another-normal-user-uid',
+            at: 192837465,
+            active: true,
+            qualifiers: {
+              existingProblemChildId: 'Some problem'
+            }
+          }
+        }
       }
     },
     'F-team': {

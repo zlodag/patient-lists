@@ -688,3 +688,169 @@ describe('Write/Patch', function(){
     });
   });
 });
+describe.only('problems', function(){
+  let teamName,
+    nhi,
+    problemId,
+    existingProblemId,
+    problem,
+    problemChild,
+    problemChildId,
+    existingProblemChildId;
+  beforeEach(function(){
+    teamName = 'A-team';
+    nhi = 'ABC1234';
+    path = '/teams/' + teamName + '/problems/' + nhi + '/';
+    user = {uid : 'default-user-uid'};
+    problemId = 'newProblemId';
+    existingProblemId = 'existingProblemId';
+    problem = {
+      name: 'Direwolf',
+      by: user.uid,
+      at: TIMESTAMP,
+      active: true
+    };
+    problemChild = 'Problem child';
+    problemChildId = 'newProblemChildId';
+    existingProblemChildId = 'existingProblemChildId';
+  });
+  it('can create an active problem', function(){
+    expect(user).can.write(problem).to.path(path + problemId);
+  });
+  it('can create an inactive problem', function(){
+    problem.active = false;
+    expect(user).can.write(problem).to.path(path + problemId);
+  });
+  it('cannot overwrite a problem', function(){
+    expect(user).cannot.write(problem).to.path(path + existingProblemId);
+  });
+  it('author must be specified', function(){
+    problem.by = null;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('author must be me', function(){
+    problem.by = 'nobodyUid';
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('author must belong to team', function(){
+    problem.by = 'nobodyUid';
+    user = {uid : problem.by};
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('timestamp must be specified', function(){
+    problem.at = null;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('timestamp must be now', function(){
+    problem.at = 1234;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('active/inactive must be specified', function(){
+    problem.active = null;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('active/inactive must be valid', function(){
+    problem.active = 4;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('can toggle active/inactive by patching', function(){
+    expect(user).can.patch({
+      at: TIMESTAMP,
+      by: user.uid,
+      active: false
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot toggle active/inactive without patching anything', function() {
+    expect(user).cannot.write(false).to.path(path + existingProblemId + '/active');
+  });
+  it('cannot toggle active/inactive without patching timestamp', function(){
+    expect(user).cannot.patch({
+      by: user.uid,
+      active: false
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot toggle active/inactive without patching user', function(){
+    expect(user).cannot.patch({
+      at: TIMESTAMP,
+      active: false
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot be problem with extra details', function(){
+    problem.randomDetail = true;
+    expect(user).cannot.write(problem).to.path(path + problemId);
+  });
+  it('can create a problem child by patching', function() {
+    expect(user).can.patch({
+      at: TIMESTAMP,
+      by: user.uid,
+      ['qualifiers/' + problemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot create a problem child without patching anything', function() {
+    expect(user).cannot.write(problemChild).to.path(path + existingProblemId + '/qualifiers/' + problemChildId);
+  });
+  it('cannot create a problem child without patching timestamp', function() {
+    expect(user).cannot.patch({
+      by: user.uid,
+      ['qualifiers/' + problemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot create a problem child without patching uid', function() {
+    expect(user).cannot.patch({
+      at: TIMESTAMP,
+      ['qualifiers/' + problemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('problemChild must be valid', function() {
+    expect(user).cannot.patch({
+      at: TIMESTAMP,
+      by: user.uid,
+      ['qualifiers/' + problemChildId]: 12
+    }).to.path(path + existingProblemId);
+  });
+  it('can update a problem child by patching', function() {
+    expect(user).can.patch({
+      at: TIMESTAMP,
+      by: user.uid,
+      ['qualifiers/' + existingProblemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot update a problem child without patching anything', function() {
+    expect(user).cannot.write(problemChild).to.path(path + existingProblemId + '/qualifiers/' + existingProblemChildId);
+  });
+  it('cannot update a problem child without patching timestamp', function() {
+    expect(user).cannot.patch({
+      by: user.uid,
+      ['qualifiers/' + existingProblemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot update a problem child without patching uid', function() {
+    expect(user).cannot.patch({
+      at: TIMESTAMP,
+      ['qualifiers/' + existingProblemChildId]: problemChild
+    }).to.path(path + existingProblemId);
+  });
+  it('can remove a problem child by patching', function() {
+    expect(user).can.patch({
+      at: TIMESTAMP,
+      by: user.uid,
+      ['qualifiers/' + existingProblemChildId]: null
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot remove a problem child without anything', function() {
+    expect(user).cannot.write(null).to.path(path + existingProblemId + '/qualifiers/' + existingProblemChildId);
+  });
+  it('cannot remove a problem child without patching timestamp', function() {
+    expect(user).cannot.patch({
+      by: user.uid,
+      ['qualifiers/' + existingProblemChildId]: null
+    }).to.path(path + existingProblemId);
+  });
+  it('cannot remove a problem child without patching uid', function() {
+    expect(user).cannot.patch({
+      at: TIMESTAMP,
+      ['qualifiers/' + existingProblemChildId]: null
+    }).to.path(path + existingProblemId);
+  });
+});
+
