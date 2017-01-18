@@ -1,0 +1,34 @@
+<ul *ngIf="comments | async">
+	<li *ngFor="let comment of comments | async">
+		<span class="comment">{{ comment.comment }}</span>
+		<span class="patient" *ngIf="!patientData && comment.nhi">
+			RE:
+			<app-patient-name
+				[nhi]="comment.nhi"
+				prefixPath="../patients"
+				suffixPath="comments"
+				></app-patient-name>
+		</span>
+		<div class="timestamp">
+			<app-team-member
+				[uid]="comment.by"
+				></app-team-member>
+			at {{ comment.at | date:'HH:mm, d/MM/yy' }}
+		</div>
+	</li>
+	<li>
+		<app-new-item-form
+			(addItemRequest)="addComment($event)"
+			placeholder="Add comment"
+			></app-new-item-form>
+		<span>
+			<label for="limitTo">Number of comments:</label>
+			<button *ngFor="let limit of teamData.limits"
+				[disabled]="limit === (teamData.limitToLast | async)"
+				(click)="teamData.limitToLast.next(limit)">
+				{{ limit }}
+			</button>
+		</span>
+	</li>
+</ul>
+<app-loading *ngIf="!(comments | async)"></app-loading>

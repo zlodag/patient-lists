@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/first';
 
 import { AuthService } from './auth.service';
 
@@ -46,13 +47,12 @@ export class TeamDataService {
             });
         });
     }
-    addComment(text: string, nhi?: string) {
+    addComment = (text: string) : void => {
         this.authService.auth.first().subscribe(authState => {
             this.comments.push({
                 comment: text.trim(),
                 by: authState.uid,
                 at: firebase.database.ServerValue.TIMESTAMP,
-                nhi: nhi || null,
             });
         });
     }

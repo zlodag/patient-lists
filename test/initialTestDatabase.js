@@ -72,13 +72,12 @@ module.exports = {
       },
       problems: {
         'ABC1234': {
-          'existingProblemId': {
-            name: 'Problem Name',
+          'Existing problem': {
             by: 'another-normal-user-uid',
             at: 192837465,
             active: true,
             qualifiers: {
-              existingProblemChildId: 'Some problem'
+              'existingProblemChildId': 'Existing problem child'
             }
           }
         }

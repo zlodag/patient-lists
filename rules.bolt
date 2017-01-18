@@ -180,7 +180,6 @@ type ProblemOrTaskList {
 
 type Problem {
 	validate() { this.at == now && isCurrentUser(this.by) }
-	name: String
 	by: String
 	at: Number
 	active: Boolean

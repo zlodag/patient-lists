@@ -13,14 +13,15 @@ import { TeamApplicationsListComponent } from './team-applications-list.componen
 import { UserListComponent } from './user-list.component';
 import { UserApplicantListComponent } from './user-applicant-list.component';
 import { PatientListComponent } from './patient-list.component';
-import { TeamCommentListComponent } from './team-comment-list.component';
+import { CommentListComponent } from './comment-list.component';
 import { PatientComponent } from './patient.component';
 import { ProblemListComponent } from './problem-list.component';
 import { TaskListComponent } from './task-list.component';
-import { PatientCommentListComponent } from './patient-comment-list.component';
 import { TabDashboardComponent, TabTeamComponent, TabPatientComponent } from './tab.component';
 import { NewItemFormComponent } from './new-item-form.component';
 import { EditableComponent } from './editable.component';
+import { TeamMemberComponent } from './team-member.component';
+import { PatientNameComponent } from './patient-name.component';
 import { LoadingComponent } from './loading.component';
 
 export const firebaseConfig: FirebaseAppConfig = {
@@ -47,16 +48,17 @@ export const firebaseConfig: FirebaseAppConfig = {
         UserListComponent,
         UserApplicantListComponent,
         PatientListComponent,
-        TeamCommentListComponent,
+        CommentListComponent,
         PatientComponent,
         ProblemListComponent,
         TaskListComponent,
-        PatientCommentListComponent,
         TabDashboardComponent,
         TabTeamComponent,
         TabPatientComponent,
         NewItemFormComponent,
         EditableComponent,
+        TeamMemberComponent,
+        PatientNameComponent,
         LoadingComponent,
     ],
     bootstrap: [

@@ -1,14 +1,44 @@
-<ul *ngIf="patientData.problems | async">
-	<li *ngFor="let problem of patientData.problems | async">
-		<app-editable
-			[value]="problem.$value"
-			(editItemRequest)="patientData.problems.$ref.ref.child(problem.$key).set($event)"
-			[deletable]="true"
-			(deleteItemRequest)="patientData.problems.remove(problem)"
-			></app-editable>
-	</li>
-	<li>
-		<app-new-item-form (addItemRequest)="patientData.problems.push($event)" placeholder="Add problem"></app-new-item-form>
-	</li>
-</ul>
-<app-loading *ngIf="!(patientData.problems | async)"></app-loading>
+<label *ngIf="activeProblems && inactiveProblems" class="editable">
+	<input [(ngModel)]="editable" type="checkbox"/>
+	Editable
+</label>
+<div *ngFor="let problems of [activeProblems, inactiveProblems]">
+	<div *ngIf="problems">
+		<h2>
+			<span>{{ problems === activeProblems ? 'Active' : 'Passive' }}</span>
+			problems
+		</h2>
+		<ol>
+			<li *ngFor="let problem of problems">
+				<h4>
+					{{ problem.key }}
+					<button *ngIf="editable" type="button" (click)="patientData.toggleActive(problem)">Make {{ problems === activeProblems ? 'passive' : 'active' }}</button>
+				</h4>
+				<ol>
+					<li *ngFor="let qualifier of problem.qualifiers">
+						<app-editable
+							[value]="qualifier.name"
+							[editable]="editable"
+							(editItemRequest)="patientData.updateProblemQualifier(problem, qualifier, $event)"
+							[deletable]="editable"
+							(deleteItemRequest)="patientData.removeProblemQualifier(problem, qualifier)"
+							></app-editable>
+					</li>
+					<li *ngIf="editable">
+						<app-new-item-form (addItemRequest)="patientData.addProblemQualifier(problem, $event)" placeholder="Add qualifier"></app-new-item-form>
+					</li>
+				</ol>
+				<em *ngIf="editable">Last updated at
+					{{ problem.at | date:'HH:mm:ss'}}
+					by
+					<app-team-member [uid]="problem.by"></app-team-member>
+				</em>
+			</li>
+			<li *ngIf="editable">
+				<app-new-item-form (addItemRequest)="patientData.addProblem($event)"
+				[placeholder]="problems === activeProblems ? 'Add active problem' : 'Add passive problem'"></app-new-item-form>
+			</li>
+		</ol>
+	</div>
+</div>
+<app-loading *ngIf="!activeProblems || !inactiveProblems"></app-loading>

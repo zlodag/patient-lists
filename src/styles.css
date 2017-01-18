@@ -28,3 +28,17 @@ li:nth-child(odd),tbody>tr:nth-child(odd) {
 .uppercase {
     text-transform: uppercase;
 }
+ol {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+ol>li>h4 {
+    margin: 0 0 0.5em;
+}
+li li:nth-child(even) {
+    background: lightblue;
+}
+li li:nth-child(odd) {
+    background: lightgrey;
+}
