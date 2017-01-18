@@ -11,15 +11,25 @@
 		<ol>
 			<li *ngFor="let problem of problems">
 				<h4>
-					{{ problem.key }}
-					<button *ngIf="editable" type="button" (click)="patientData.toggleActive(problem)">Make {{ problems === activeProblems ? 'passive' : 'active' }}</button>
+					<app-editable
+						[value]="problem.name"
+						[editable]="editable"
+						(editItemRequest)="patientData.renameProblem(problem, $event)"
+						[deletable]="editable"
+						(deleteItemRequest)="patientData.removeProblem(problem)"
+						></app-editable>
+					<button
+						*ngIf="editable"
+						type="button"
+						(click)="patientData.toggleProblem(problem)"
+						>Make {{ problems === activeProblems ? 'passive' : 'active' }}</button>
 				</h4>
 				<ol>
 					<li *ngFor="let qualifier of problem.qualifiers">
 						<app-editable
 							[value]="qualifier.name"
 							[editable]="editable"
-							(editItemRequest)="patientData.updateProblemQualifier(problem, qualifier, $event)"
+							(editItemRequest)="patientData.renameProblemQualifier(problem, qualifier, $event)"
 							[deletable]="editable"
 							(deleteItemRequest)="patientData.removeProblemQualifier(problem, qualifier)"
 							></app-editable>

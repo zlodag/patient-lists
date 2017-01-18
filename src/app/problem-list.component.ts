@@ -7,14 +7,7 @@ import { Problem } from './problem';
 
 @Component({
     templateUrl: './problem-list.component.html',
-    styles: [`
-        .editable {
-            float: right;
-        }
-        h2 {
-            margin: 0;
-        }
-    `],
+    styleUrls: ['./problem-list.component.css'],
 })
 export class ProblemListComponent implements OnInit, OnDestroy {
     private _sub : Subscription;

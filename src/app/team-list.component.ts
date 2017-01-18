@@ -7,7 +7,6 @@ import 'rxjs/add/operator/first';
 import { AuthService } from './auth.service';
 
 @Component({
-    styleUrls: ['./team-list.component.css'],
     templateUrl: './team-list.component.html',
 })
 

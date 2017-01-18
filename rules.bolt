@@ -106,19 +106,8 @@ path /teams/{team}/problems/{nhi} is ProblemOrTaskList {
 	read() { auth != null && wasPartOfTeam(team) }
 }
 path /teams/{team}/problems/{nhi}/{problem} is Problem {
-	create() { auth != null && wasPartOfTeam(team) }
-}
-path /teams/{team}/problems/{nhi}/{problem}/at {
-	update() { auth != null && wasPartOfTeam(team) }
-}
-path /teams/{team}/problems/{nhi}/{problem}/by {
-	update() { auth != null && wasPartOfTeam(team) }
-}
-path /teams/{team}/problems/{nhi}/{problem}/active {
-	update() { auth != null && wasPartOfTeam(team) }
-}
-path /teams/{team}/problems/{nhi}/{problem}/qualifiers/{qualifier} is String {
-	write() { auth != null && wasPartOfTeam(team) }	
+	index() { [ "name" ] }
+	write() { auth != null && wasPartOfTeam(team) }
 }
 path /teams/{team}/tasks/{nhi} is ProblemOrTaskList {
 	read() { auth != null && wasPartOfTeam(team) }
@@ -180,10 +169,11 @@ type ProblemOrTaskList {
 
 type Problem {
 	validate() { this.at == now && isCurrentUser(this.by) }
+	name: String
 	by: String
 	at: Number
 	active: Boolean
-	//qualifiers: String[]
+	qualifiers: String[]
 }
 
 type Me {

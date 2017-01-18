@@ -27,6 +27,9 @@ export class PatientDataService {
             this.nhi =  params['nhi'];
             this.patient = this.db.object('teams/' + this.teamData.team + '/patients/' + this.nhi);
             this.problems = this.db.list('teams/' + this.teamData.team + '/problems/' + this.nhi, {
+                query: {
+                    orderByChild: 'name',
+                },
                 preserveSnapshot: true,
             });
             // if (this.problems) {
@@ -54,16 +57,26 @@ export class PatientDataService {
             });
         });
     };
-    addProblem = (text: string) => {
+    addProblem = (name: string) => {
         this.authService.auth.first().subscribe(authState => {
-            this.problems.$ref.ref.child(text.trim()).set({
+            this.problems.push({
+                name: name.trim(),
                 by: authState.uid,
                 at: firebase.database.ServerValue.TIMESTAMP,
                 active: true,
             });
         });
     };
-    toggleActive = (problem: Problem) => {
+    renameProblem = (problem: Problem, name: string) => {
+        this.authService.auth.first().subscribe(authState => {
+            this.problems.update(problem.key, {
+                by: authState.uid,
+                at: firebase.database.ServerValue.TIMESTAMP,
+                name: name,
+            });
+        });
+    };
+    toggleProblem = (problem: Problem) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
                 by: authState.uid,
@@ -71,6 +84,9 @@ export class PatientDataService {
                 active: !problem.active,
             });
         });
+    };
+    removeProblem = (problem: Problem) => {
+        this.problems.remove(problem.key);
     };
     addProblemQualifier = (problem: Problem, text: string) => {
         this.authService.auth.first().subscribe(authState => {
@@ -81,21 +97,21 @@ export class PatientDataService {
             });
         });
     };
+    renameProblemQualifier = (problem: Problem, qualifier: Qualifier, name: string) => {
+        this.authService.auth.first().subscribe(authState => {
+            this.problems.update(problem.key, {
+                by: authState.uid,
+                at: firebase.database.ServerValue.TIMESTAMP,
+                ['qualifiers/' + qualifier.key]: name,
+            });
+        });
+    };
     removeProblemQualifier = (problem: Problem, qualifier: Qualifier) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
                 by: authState.uid,
                 at: firebase.database.ServerValue.TIMESTAMP,
                 ['qualifiers/' + qualifier.key]: null,
-            });
-        });
-    };
-    updateProblemQualifier = (problem: Problem, qualifier: Qualifier, text: string) => {
-        this.authService.auth.first().subscribe(authState => {
-            this.problems.update(problem.key, {
-                by: authState.uid,
-                at: firebase.database.ServerValue.TIMESTAMP,
-                ['qualifiers/' + qualifier.key]: text,
             });
         });
     };

@@ -702,9 +702,10 @@ describe.only('problems', function(){
     nhi = 'ABC1234';
     path = '/teams/' + teamName + '/problems/' + nhi + '/';
     user = {uid : 'default-user-uid'};
-    existingProblemKey = 'Existing problem';
-    newProblemKey = 'New Problem';
+    existingProblemKey = 'existingProblemKey';
+    newProblemKey = 'newProblemKey';
     newProblem = {
+      name: 'New problem name',
       by: user.uid,
       at: TIMESTAMP,
       active: true
@@ -720,9 +721,12 @@ describe.only('problems', function(){
     newProblem.active = false;
     expect(user).can.write(newProblem).to.path(path + newProblemKey);
   });
-  it('cannot overwrite a problem', function(){
-    expect(user).cannot.write(newProblem).to.path(path + existingProblemKey);
+  it('can overwrite a problem', function(){
+    expect(user).can.write(newProblem).to.path(path + existingProblemKey);
   });
+  it('can delete a problem', function(){
+    expect(user).can.write(null).to.path(path + existingProblemKey);
+  });  
   it('author must be specified', function(){
     newProblem.by = null;
     expect(user).cannot.write(newProblem).to.path(path + newProblemKey);
