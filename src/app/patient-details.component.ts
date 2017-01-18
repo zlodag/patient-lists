@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamDataService } from './team-data.service';
 import { PatientDataService } from './patient-data.service';
 
 @Component({
-    templateUrl: './patient.component.html',
+    templateUrl: './patient-details.component.html',
+    selector: 'app-patient-details',
 })
 
-export class PatientComponent {
+export class PatientDetailsComponent {
+    @Input() editable: boolean = true;
     constructor(
         private router: Router,
         private route: ActivatedRoute,

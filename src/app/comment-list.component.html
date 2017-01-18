@@ -1,4 +1,12 @@
 <ul *ngIf="comments | async">
+	<li>
+		<label for="limitTo">Number of comments:</label>
+		<button *ngFor="let limit of teamData.limits"
+			[disabled]="limit === (teamData.limitToLast | async)"
+			(click)="teamData.limitToLast.next(limit)">
+			{{ limit }}
+		</button>
+	</li>
 	<li *ngFor="let comment of comments | async">
 		<span class="comment">{{ comment.comment }}</span>
 		<span class="patient" *ngIf="!patientData && comment.nhi">
@@ -16,19 +24,11 @@
 			at {{ comment.at | date:'HH:mm, d/MM/yy' }}
 		</div>
 	</li>
-	<li>
+	<li *ngIf="editable">
 		<app-new-item-form
 			(addItemRequest)="addComment($event)"
 			placeholder="Add comment"
 			></app-new-item-form>
-		<span>
-			<label for="limitTo">Number of comments:</label>
-			<button *ngFor="let limit of teamData.limits"
-				[disabled]="limit === (teamData.limitToLast | async)"
-				(click)="teamData.limitToLast.next(limit)">
-				{{ limit }}
-			</button>
-		</span>
 	</li>
 </ul>
 <app-loading *ngIf="!(comments | async)"></app-loading>

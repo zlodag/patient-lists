@@ -16,6 +16,7 @@
 		<td>
 			<app-editable
 				[value]="(patientData.patient | async).lastName"
+				[editable]="editable"
 				(editItemRequest)="updateLastName($event)"
 			></app-editable>
 		</td>
@@ -25,6 +26,7 @@
 		<td>
 			<app-editable
 				[value]="(patientData.patient | async).firstName"
+				[editable]="editable"
 				(editItemRequest)="updateFirstName($event)"
 			></app-editable>
 		</td>
@@ -34,13 +36,14 @@
 		<td>
 			<app-editable
 				[value]="(patientData.patient | async).ward || ''"
+				[editable]="editable"
 				(editItemRequest)="updateWard($event)"
-				[deletable]="!!((patientData.patient | async).ward)"
+				[deletable]="editable && !!((patientData.patient | async).ward)"
 				(deleteItemRequest)="deleteWard()"
 			></app-editable>
 		</td>
 	</tr>
-	<tr>
+	<tr *ngIf="editable">
 		<td colspan="2">
 			<button type="button" (click)="deletePatient()">Delete patient</button>
 		</td>

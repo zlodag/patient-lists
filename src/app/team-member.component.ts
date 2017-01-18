@@ -17,7 +17,7 @@ export class TeamMemberComponent implements OnChanges {
     constructor(
         private teamData: TeamDataService,
     ) { }
-    ngOnChanges(changes: SimpleChanges){
+    ngOnChanges(changes: SimpleChanges) {
         const change = changes['uid'];
         if (change) {
             if (change.isFirstChange()) {

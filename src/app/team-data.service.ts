@@ -21,6 +21,15 @@ export class TeamDataService {
     limits = [5, 10, 20, 50];
     limitToLast = new BehaviorSubject<number>(this.limits[1]);
     lastChecked = new BehaviorSubject<number>(Date.now());
+    addComment = (text: string) : void => {
+        this.authService.auth.first().subscribe(authState => {
+            this.comments.push({
+                comment: text.trim(),
+                by: authState.uid,
+                at: firebase.database.ServerValue.TIMESTAMP,
+            });
+        });
+    }
     constructor(
         private route: ActivatedRoute,
         private db: AngularFireDatabase,
@@ -44,15 +53,6 @@ export class TeamDataService {
                     }
                 }).map((comments: any[]) => comments.filter(comment => comment.by !== authState.uid).length || null);
                 this.profileData = this.db.object('teams/' + this.team + '/users/' + authState.uid);
-            });
-        });
-    }
-    addComment = (text: string) : void => {
-        this.authService.auth.first().subscribe(authState => {
-            this.comments.push({
-                comment: text.trim(),
-                by: authState.uid,
-                at: firebase.database.ServerValue.TIMESTAMP,
             });
         });
     }

@@ -14,7 +14,8 @@ import { UserListComponent } from './user-list.component';
 import { UserApplicantListComponent } from './user-applicant-list.component';
 import { PatientListComponent } from './patient-list.component';
 import { CommentListComponent } from './comment-list.component';
-import { PatientComponent } from './patient.component';
+import { PatientOverviewComponent } from './patient-overview.component';
+import { PatientDetailsComponent } from './patient-details.component';
 import { ProblemListComponent } from './problem-list.component';
 import { TaskListComponent } from './task-list.component';
 import { TabDashboardComponent, TabTeamComponent, TabPatientComponent } from './tab.component';
@@ -49,7 +50,8 @@ export const firebaseConfig: FirebaseAppConfig = {
         UserApplicantListComponent,
         PatientListComponent,
         CommentListComponent,
-        PatientComponent,
+        PatientOverviewComponent,
+        PatientDetailsComponent,
         ProblemListComponent,
         TaskListComponent,
         TabDashboardComponent,

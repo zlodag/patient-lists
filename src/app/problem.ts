@@ -21,7 +21,7 @@ export class Problem {
 }
 
 export class Qualifier {
-    key: string
+    key: string;
     name: string;
     constructor(snap: firebase.database.DataSnapshot) {
         this.key = snap.key;

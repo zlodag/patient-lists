@@ -1,6 +1,7 @@
-.editable {
-    float: right;
+div>ol {
+    padding-left: 1em;
+    background: grey;
 }
-h2 {
-    margin: 0;
+div:first-child>ol {
+    background: yellow;
 }

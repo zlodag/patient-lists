@@ -1,54 +1,47 @@
-<label *ngIf="activeProblems && inactiveProblems" class="editable">
-	<input [(ngModel)]="editable" type="checkbox"/>
-	Editable
-</label>
-<div *ngFor="let problems of [activeProblems, inactiveProblems]">
-	<div *ngIf="problems">
-		<h2>
-			<span>{{ problems === activeProblems ? 'Active' : 'Passive' }}</span>
-			problems
-		</h2>
-		<ol>
-			<li *ngFor="let problem of problems">
-				<h4>
+<div *ngFor="let problems of [activeProblems, inactiveProblems]">		<!-- <h2>
+		<span>{{ problems === activeProblems ? 'Active' : 'Passive' }}</span>
+		problems
+	</h2> -->
+	<ol *ngIf="problems">
+		<li *ngFor="let problem of problems">
+			<h4>
+				<app-editable
+					[value]="problem.name"
+					[editable]="editable"
+					(editItemRequest)="patientData.renameProblem(problem, $event)"
+					[deletable]="editable"
+					(deleteItemRequest)="patientData.removeProblem(problem)"
+					></app-editable>
+				<button
+					*ngIf="editable"
+					type="button"
+					(click)="patientData.toggleProblem(problem)"
+					>Make {{ problems === activeProblems ? 'passive' : 'active' }}</button>
+			</h4>
+			<ol>
+				<li *ngFor="let qualifier of problem.qualifiers">
 					<app-editable
-						[value]="problem.name"
+						[value]="qualifier.name"
 						[editable]="editable"
-						(editItemRequest)="patientData.renameProblem(problem, $event)"
+						(editItemRequest)="patientData.renameProblemQualifier(problem, qualifier, $event)"
 						[deletable]="editable"
-						(deleteItemRequest)="patientData.removeProblem(problem)"
+						(deleteItemRequest)="patientData.removeProblemQualifier(problem, qualifier)"
 						></app-editable>
-					<button
-						*ngIf="editable"
-						type="button"
-						(click)="patientData.toggleProblem(problem)"
-						>Make {{ problems === activeProblems ? 'passive' : 'active' }}</button>
-				</h4>
-				<ol>
-					<li *ngFor="let qualifier of problem.qualifiers">
-						<app-editable
-							[value]="qualifier.name"
-							[editable]="editable"
-							(editItemRequest)="patientData.renameProblemQualifier(problem, qualifier, $event)"
-							[deletable]="editable"
-							(deleteItemRequest)="patientData.removeProblemQualifier(problem, qualifier)"
-							></app-editable>
-					</li>
-					<li *ngIf="editable">
-						<app-new-item-form (addItemRequest)="patientData.addProblemQualifier(problem, $event)" placeholder="Add qualifier"></app-new-item-form>
-					</li>
-				</ol>
-				<em *ngIf="editable">Last updated at
-					{{ problem.at | date:'HH:mm:ss'}}
-					by
-					<app-team-member [uid]="problem.by"></app-team-member>
-				</em>
-			</li>
-			<li *ngIf="editable">
-				<app-new-item-form (addItemRequest)="patientData.addProblem($event)"
-				[placeholder]="problems === activeProblems ? 'Add active problem' : 'Add passive problem'"></app-new-item-form>
-			</li>
-		</ol>
-	</div>
+				</li>
+				<li *ngIf="editable">
+					<app-new-item-form (addItemRequest)="patientData.addProblemQualifier(problem, $event)" placeholder="Add qualifier"></app-new-item-form>
+				</li>
+			</ol>
+			<em *ngIf="editable">Last updated at
+				{{ problem.at | date:'HH:mm:ss'}}
+				by
+				<app-team-member [uid]="problem.by"></app-team-member>
+			</em>
+		</li>
+		<li *ngIf="editable">
+			<app-new-item-form (addItemRequest)="patientData.addProblem($event)"
+			[placeholder]="problems === activeProblems ? 'Add active problem' : 'Add passive problem'"></app-new-item-form>
+		</li>
+	</ol>
 </div>
 <app-loading *ngIf="!activeProblems || !inactiveProblems"></app-loading>

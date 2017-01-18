@@ -1,4 +1,4 @@
-import { Component, Optional, OnInit } from '@angular/core';
+import { Component, Optional, Input, OnInit } from '@angular/core';
 import { FirebaseListObservable } from 'angularfire2';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -9,8 +9,10 @@ import { PatientDataService } from './patient-data.service';
 @Component({
     templateUrl: './comment-list.component.html',
     styleUrls: ['./comment-list.component.css'],
+    selector: 'app-comment-list',
 })
 export class CommentListComponent implements OnInit {
+    @Input() editable: boolean = true;
     comments: FirebaseListObservable<any[]>;
     limitToLast: BehaviorSubject<number>;
     addComment: (text: string) => void;
@@ -18,7 +20,7 @@ export class CommentListComponent implements OnInit {
         public teamData: TeamDataService,
         @Optional() private patientData: PatientDataService,
     ) { }
-    ngOnInit(){
+    ngOnInit() {
         if (this.patientData) {
             this.comments = this.patientData.comments;
             this.addComment = this.patientData.addComment;

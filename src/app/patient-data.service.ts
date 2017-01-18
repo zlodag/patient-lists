@@ -56,7 +56,7 @@ export class PatientDataService {
                 nhi: this.nhi,
             });
         });
-    };
+    }
     addProblem = (name: string) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.push({
@@ -66,7 +66,7 @@ export class PatientDataService {
                 active: true,
             });
         });
-    };
+    }
     renameProblem = (problem: Problem, name: string) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
@@ -75,7 +75,7 @@ export class PatientDataService {
                 name: name,
             });
         });
-    };
+    }
     toggleProblem = (problem: Problem) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
@@ -84,10 +84,10 @@ export class PatientDataService {
                 active: !problem.active,
             });
         });
-    };
+    }
     removeProblem = (problem: Problem) => {
         this.problems.remove(problem.key);
-    };
+    }
     addProblemQualifier = (problem: Problem, text: string) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
@@ -96,7 +96,7 @@ export class PatientDataService {
                 ['qualifiers/' + this.problems.$ref.ref.child('qualifiers').push().key]: text,
             });
         });
-    };
+    }
     renameProblemQualifier = (problem: Problem, qualifier: Qualifier, name: string) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
@@ -105,7 +105,7 @@ export class PatientDataService {
                 ['qualifiers/' + qualifier.key]: name,
             });
         });
-    };
+    }
     removeProblemQualifier = (problem: Problem, qualifier: Qualifier) => {
         this.authService.auth.first().subscribe(authState => {
             this.problems.update(problem.key, {
@@ -114,5 +114,5 @@ export class PatientDataService {
                 ['qualifiers/' + qualifier.key]: null,
             });
         });
-    };
+    }
 }

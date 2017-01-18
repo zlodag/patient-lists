@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -8,12 +8,13 @@ import { Problem } from './problem';
 @Component({
     templateUrl: './problem-list.component.html',
     styleUrls: ['./problem-list.component.css'],
+    selector: 'app-problem-list',
 })
 export class ProblemListComponent implements OnInit, OnDestroy {
-    private _sub : Subscription;
+    private _sub: Subscription;
     activeProblems: Problem[];
     inactiveProblems: Problem[];
-    editable: boolean = false;
+    @Input() editable: boolean = true;
     constructor(public patientData: PatientDataService) { }
     ngOnInit() {
         this._sub = this.patientData.problems.subscribe(problems => {

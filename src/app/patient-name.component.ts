@@ -25,7 +25,7 @@ export class PatientNameComponent implements OnInit {
     constructor(
         private teamData: TeamDataService,
     ) { }
-    ngOnInit(){
+    ngOnInit() {
         this.patientData = this.teamData.patientData.map(patients => patients[this.nhi] || null);
     }
 }
