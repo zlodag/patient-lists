@@ -7,7 +7,7 @@ import { TeamDataService } from './team-data.service';
 @Component({
     template: `
         <a *ngIf="patientData | async"
-            [routerLink]="[prefixPath, nhi, suffixPath]"
+            [routerLink]="[prefixPath, nhi]"
             [title]="nhi"
         >{{ (patientData | async).firstName }}
         {{ (patientData | async).lastName }}</a>
@@ -19,9 +19,7 @@ export class PatientNameComponent implements OnInit {
 
     patientData: Observable<{firstName: string; lastName: string; }>;
     @Input() nhi: string;
-    @Input() prefixPath: string = '';
-    @Input() suffixPath: string = '';
-
+    @Input() prefixPath: string;
     constructor(
         private teamData: TeamDataService,
     ) { }
